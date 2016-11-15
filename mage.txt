@@ -1,0 +1,46 @@
+// Hey there!
+// This is CODE, lets you control your character with code.
+// If you don't know how to code, don't worry, It's easy.
+// Just set attack_mode to true and ENGAGE!
+if (character.hp / character.max_hp < 0.6){
+    buy("hpot0",1);
+    parent.use('hp');
+}
+else if (character.mp / character.max_mp < 0.5){
+    buy("mpot0",1);
+    parent.use('mp');
+}
+setInterval(function(){
+    loot();
+
+	// Party leader
+    var leader = get_player(character.party);
+
+    // Current target and target of leader.
+    var currentTarget = get_targeted_monster();
+    var leaderTarget = get_target_of(leader)
+    var targetTarget = get_target_of(currentTarget)
+    // Change the target.
+    if (!currentTarget || currentTarget != leaderTarget){ 
+        // Current target is empty or other than the leader's.
+        change_target(leaderTarget);
+        currentTarget = get_targeted_monster();
+    }
+
+if(currentTarget && can_attack(currentTarget) && targetTarget == leader){
+    // Current target isn't empty and attackable.
+        attack(currentTarget);
+    }
+
+    //Move to leader.
+    if(!character.moving)
+        // Move only if you are not already moving.
+        move(leader.real_x, leader.real_y);
+
+            set_message("Dpsing");
+},1000/4);
+
+
+// NOTE: If the tab isn't focused, browsers slow down the game
+// Learn Javascript: https://www.codecademy.com/learn/javascript
+// Write your own CODE: https://github.com/kaansoral/adventureland
